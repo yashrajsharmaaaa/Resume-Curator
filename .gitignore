@@ -186,3 +186,23 @@ Desktop.ini
 # Temporary files
 *.tmp
 *.temp
+
+# Deployment and setup files (local only)
+DEPLOYMENT_CHECKLIST.md
+PRE_DEPLOYMENT_CHECKLIST.md
+DEPLOYMENT_GUIDE.md
+DEPLOYMENT.md
+PORTFOLIO_DEPLOYMENT.md
+github_setup_commands.txt
+CRITICAL_ACTIONS_NEEDED.md
+FILE_RENAME_LOG.md
+GITHUB_INTEGRATION.md
+IGNORE_FILES_SETUP.md
+SDE1_OPTIMIZATION_ROADMAP.md
+setup_deployment.py
+setup_portfolio.py
+docker-compose.prod.yml
+docker-compose.yml
+railway.json
+vercel.json
+init.sql
