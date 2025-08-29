@@ -78,14 +78,26 @@ app = FastAPI(
 
 
 # CORS Configuration
+cors_origins = [
+    "http://localhost:3000",  # React development server
+    "http://localhost:5173",  # Vite development server
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:5173",
+]
+
+# Add production origins from environment
+cors_env = os.getenv('CORS_ORIGINS')
+if cors_env:
+    try:
+        import json
+        production_origins = json.loads(cors_env)
+        cors_origins.extend(production_origins)
+    except (json.JSONDecodeError, TypeError):
+        logger.warning(f"Invalid CORS_ORIGINS format: {cors_env}")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",  # React development server
-        "http://localhost:5173",  # Vite development server
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:5173",
-    ],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
@@ -93,9 +105,18 @@ app.add_middleware(
 
 
 # Trusted Host Middleware (security)
+allowed_hosts = ["localhost", "127.0.0.1", "*.localhost"]
+
+# Add production hosts
+if os.getenv('ENVIRONMENT') == 'production':
+    allowed_hosts.extend([
+        "*.onrender.com",
+        "resume-curator-api.onrender.com"
+    ])
+
 app.add_middleware(
     TrustedHostMiddleware,
-    allowed_hosts=["localhost", "127.0.0.1", "*.localhost"]
+    allowed_hosts=allowed_hosts
 )
 
 
