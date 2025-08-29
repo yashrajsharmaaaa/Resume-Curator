@@ -10,10 +10,16 @@
 
 const ResultsDisplay = ({ 
   compatibilityScore, 
+  strengths = [],
+  areasForImprovement = [],
   missingSkills = [], 
-  topRecommendations = [] 
+  topRecommendations = [],
+  overallAssessment = ""
 }) => {
-  // Limit recommendations to maximum 5 items
+  // Limit items to maximum 5 for better display
+  const limitedStrengths = strengths.slice(0, 5);
+  const limitedImprovements = areasForImprovement.slice(0, 5);
+  const limitedMissingSkills = missingSkills.slice(0, 5);
   const limitedRecommendations = topRecommendations.slice(0, 5);
 
   return (
@@ -21,34 +27,71 @@ const ResultsDisplay = ({
       {/* Compatibility Score */}
       <div className="text-center">
         <h2 className="text-xl font-semibold mb-md text-gray-800">
-          Compatibility Score
+          Job Match Score
         </h2>
         <div className="text-3xl font-bold text-gray-800">
           {Math.round(compatibilityScore)}%
         </div>
+        {overallAssessment && (
+          <p className="text-sm text-gray-600 mt-sm max-w-md mx-auto">
+            {overallAssessment}
+          </p>
+        )}
       </div>
 
-      {/* Missing Skills */}
-      {missingSkills.length > 0 && (
+      {/* Resume Strengths */}
+      {limitedStrengths.length > 0 && (
         <div>
           <h3 className="text-lg font-medium mb-md text-gray-800">
-            Missing Skills
+            Resume Strengths
           </h3>
           <ul className="space-y-sm">
-            {missingSkills.map((skill, index) => (
+            {limitedStrengths.map((strength, index) => (
               <li key={index} className="text-base text-gray-700">
-                • {skill}
+                ✓ {strength}
               </li>
             ))}
           </ul>
         </div>
       )}
 
-      {/* Top Recommendations */}
+      {/* Areas for Improvement */}
+      {limitedImprovements.length > 0 && (
+        <div>
+          <h3 className="text-lg font-medium mb-md text-gray-800">
+            Areas for Improvement
+          </h3>
+          <ul className="space-y-sm">
+            {limitedImprovements.map((improvement, index) => (
+              <li key={index} className="text-base text-gray-700">
+                • {improvement}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Missing Skills Gap */}
+      {limitedMissingSkills.length > 0 && (
+        <div>
+          <h3 className="text-lg font-medium mb-md text-gray-800">
+            Skills Gap Analysis
+          </h3>
+          <ul className="space-y-sm">
+            {limitedMissingSkills.map((skill, index) => (
+              <li key={index} className="text-base text-gray-700">
+                ⚠ {skill}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Improvement Suggestions */}
       {limitedRecommendations.length > 0 && (
         <div>
           <h3 className="text-lg font-medium mb-md text-gray-800">
-            Top Recommendations
+            Improvement Suggestions
           </h3>
           <ol className="space-y-sm">
             {limitedRecommendations.map((recommendation, index) => (

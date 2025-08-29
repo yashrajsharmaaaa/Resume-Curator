@@ -88,9 +88,12 @@ function App() {
     const analysisData = backendData.analysis_data || {}
 
     return {
-      compatibilityScore: backendData.compatibility_score || analysisData.compatibility_score || 0,
+      compatibilityScore: backendData.compatibility_score || analysisData.compatibility_score || analysisData.overall_score || 0,
+      strengths: analysisData.strengths || [],
+      areasForImprovement: analysisData.areas_for_improvement || [],
       missingSkills: analysisData.missing_skills || analysisData.gaps || [],
-      topRecommendations: analysisData.recommendations || analysisData.suggestions || []
+      topRecommendations: analysisData.recommendations || analysisData.suggestions || [],
+      overallAssessment: analysisData.overall_assessment || ""
     }
   }, [])
 
@@ -187,8 +190,11 @@ function App() {
             {analysisResults && (
               <ResultsDisplay
                 compatibilityScore={analysisResults.compatibilityScore}
+                strengths={analysisResults.strengths}
+                areasForImprovement={analysisResults.areasForImprovement}
                 missingSkills={analysisResults.missingSkills}
                 topRecommendations={analysisResults.topRecommendations}
+                overallAssessment={analysisResults.overallAssessment}
               />
             )}
 
