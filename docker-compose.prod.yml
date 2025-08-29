@@ -1,0 +1,19 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/resume_curator
+      - DEBUG=false
+      - RELOAD=false
+    volumes: []  # Remove development volumes in production
+
+  frontend:
+    build:
+      context: ./frontend
+      target: production
+    ports:
+      - "80:80"  # Use port 80 for production
+    volumes: []  # Remove development volumes in production
+    environment:
+      - VITE_API_URL=http://backend:8000  # Use internal Docker network
