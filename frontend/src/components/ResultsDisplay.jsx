@@ -8,11 +8,11 @@
  * Requirements: 5.1, 5.2, 5.3, 5.4, 5.5
  */
 
-const ResultsDisplay = ({ 
-  compatibilityScore, 
+const ResultsDisplay = ({
+  compatibilityScore,
   strengths = [],
   areasForImprovement = [],
-  missingSkills = [], 
+  missingSkills = [],
   topRecommendations = [],
   overallAssessment = ""
 }) => {
@@ -96,8 +96,8 @@ const ResultsDisplay = ({
           <ol className="space-y-sm">
             {limitedRecommendations.map((recommendation, index) => (
               <li key={index} className="text-base text-gray-700">
-                {index + 1}. {typeof recommendation === 'string' 
-                  ? recommendation 
+                {index + 1}. {typeof recommendation === 'string'
+                  ? recommendation
                   : recommendation.title || recommendation.description || 'Recommendation'
                 }
               </li>
