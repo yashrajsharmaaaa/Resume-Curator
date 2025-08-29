@@ -215,9 +215,14 @@ if __name__ == "__main__":
     
     # Get server configuration from environment
     host = os.getenv('HOST', '0.0.0.0')
-    port = int(os.getenv('PORT', '8000'))
-    reload = os.getenv('RELOAD', 'true').lower() == 'true'
+    port = int(os.getenv('PORT', 10000))  # Default to 10000 for Render
+    
+    # Production settings
+    reload = False if os.getenv('ENVIRONMENT') == 'production' else True
     log_level = os.getenv('LOG_LEVEL', 'info').lower()
+    
+    print(f"Starting Resume Curator API on {host}:{port}")
+    print(f"Environment: {os.getenv('ENVIRONMENT', 'development')}")
     
     # Start the server
     uvicorn.run(
