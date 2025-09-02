@@ -115,6 +115,44 @@ async def upload_resume(
         )
 
 
+@router.get("/resumes")
+async def list_resumes(db: Session = Depends(get_db)):
+    """
+    Get list of all resumes.
+    
+    Args:
+        db: Database session
+        
+    Returns:
+        List of resume information dictionaries
+    """
+    try:
+        resumes = db.query(Resume).order_by(Resume.upload_timestamp.desc()).all()
+        
+        result = []
+        for resume in resumes:
+            # Get analysis count for each resume
+            analysis_count = db.query(AnalysisResult).filter(AnalysisResult.resume_id == resume.id).count()
+            
+            result.append({
+                "id": resume.id,
+                "filename": resume.filename,
+                "file_size": resume.file_size,
+                "status": resume.status,
+                "upload_timestamp": resume.upload_timestamp,
+                "analysis_count": analysis_count
+            })
+        
+        return {"resumes": result, "total": len(result)}
+        
+    except Exception as e:
+        logger.error(f"Resume list retrieval failed: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Resume list retrieval failed: {str(e)}"
+        )
+
+
 @router.get("/resumes/{resume_id}")
 async def get_resume(resume_id: int, db: Session = Depends(get_db)):
     """
