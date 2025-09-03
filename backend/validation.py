@@ -1,14 +1,4 @@
-"""
-Input validation and security for Resume Curator application.
 
-This module provides essential validation and security features:
-- File type and size validation
-- Input sanitization
-- Basic rate limiting
-- MIME type verification
-
-Designed for SDE1 portfolio demonstration with clean, focused implementation.
-"""
 
 import re
 import html

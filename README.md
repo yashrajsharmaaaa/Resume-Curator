@@ -1,15 +1,15 @@
 # Resume Curator
 
-AI-powered resume analysis and job matching platform that helps optimize resumes for specific job descriptions.
+AI-powered resume analysis platform that helps optimize resumes for specific job descriptions using intelligent matching algorithms.
 
 ## What it does
 
 **Resume Curator** analyzes your resume against job descriptions using AI to provide:
 
-- **Resume Analysis**: Get detailed feedback on your resume's strengths and weaknesses
-- **Job Matching**: See how well your resume matches specific job requirements with compatibility scoring
+- **Smart Resume Analysis**: Get AI-powered feedback on your resume's strengths and areas for improvement
+- **Job Matching Score**: See how well your resume matches specific job requirements with compatibility scoring
 - **Skills Gap Analysis**: Identify missing skills and keywords from the job description
-- **Improvement Suggestions**: Get actionable recommendations to enhance your resume
+- **Actionable Suggestions**: Get targeted recommendations to enhance your resume for specific roles
 
 ## Live Demo
 

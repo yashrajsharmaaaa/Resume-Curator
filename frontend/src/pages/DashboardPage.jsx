@@ -9,8 +9,6 @@ const DashboardPage = () => {
   const navigate = useNavigate();
   const { resumes } = useApp();
 
-  // Use only real resumes from context - no mock data
-
   const handleResumeClick = (resume) => {
     navigate('/results', { state: { resume } });
   };
@@ -18,24 +16,17 @@ const DashboardPage = () => {
   const handleUploadNew = () => {
     navigate('/');
   };
-
-  // Calculate stats from real resumes only
   const totalResumes = resumes.length;
-  
-  // Enhanced empty state handling for statistics
   const averageScore = totalResumes > 0 
     ? Math.round(resumes.reduce((sum, resume) => sum + (resume.score || 0), 0) / totalResumes)
     : null;
   
   const highScoreResumes = resumes.filter(resume => (resume.score || 0) >= 90).length;
-  
-  // Format display values with proper empty state handling
   const averageScoreDisplay = averageScore !== null ? `${averageScore}%` : 'No data';
   const averageScoreSubtitle = totalResumes > 0 ? 'Across all resumes' : 'Upload resumes to see average';
   const totalResumesSubtitle = totalResumes > 0 ? 'Uploaded resumes' : 'No resumes uploaded yet';
   const highScoreSubtitle = totalResumes > 0 ? '90% or above' : 'Upload resumes to track high scores';
   
-  // Dynamic page subtitle based on data state
   const pageSubtitle = totalResumes > 0 
     ? 'Overview of your uploaded resumes' 
     : 'Get started by uploading your first resume for analysis';
@@ -51,7 +42,7 @@ const DashboardPage = () => {
         </Button>
       </PageHeader>
 
-      {/* Stats Overview */}
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <StatCard
           title="Total Resumes"
@@ -90,7 +81,6 @@ const DashboardPage = () => {
         />
       </div>
       
-      {/* Resume Cards */}
       <div>
         <h2 className="text-xl font-semibold text-gray-900 mb-6">Your Resumes</h2>
         

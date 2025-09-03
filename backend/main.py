@@ -1,10 +1,4 @@
-"""
-Resume Curator FastAPI Application
 
-This is the main application file for the Resume Curator API.
-Designed for SDE1 portfolio demonstration with clean architecture,
-proper error handling, and essential middleware.
-"""
 
 import os
 import logging
@@ -19,7 +13,6 @@ from database import init_database, check_database_health
 from ai_analysis_service import cleanup_ai_service
 from api import router
 
-# Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -29,19 +22,10 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """
-    Application lifespan manager for startup and shutdown events.
-    
-    Handles database initialization on startup and cleanup on shutdown.
-    """
-    # Startup
     try:
         logger.info("Starting Resume Curator API...")
-        
-        # Initialize database
         init_database()
         logger.info("Database initialized successfully")
-        
         logger.info("Application startup completed")
         
     except Exception as e:
@@ -50,14 +34,11 @@ async def lifespan(app: FastAPI):
     
     yield
     
-    # Shutdown
     try:
         logger.info("Shutting down Resume Curator API...")
         
-        # Cleanup AI service
         await cleanup_ai_service()
         
-        # Database cleanup handled automatically by SQLAlchemy
         logger.info("Database cleanup completed")
         
         logger.info("Application shutdown completed")
@@ -66,7 +47,6 @@ async def lifespan(app: FastAPI):
         logger.error(f"Application shutdown error: {e}")
 
 
-# Create FastAPI application
 app = FastAPI(
     title="Resume Curator API",
     version="1.0.0",
@@ -77,15 +57,12 @@ app = FastAPI(
 )
 
 
-# CORS Configuration
 cors_origins = [
-    "http://localhost:3000",  # React development server
-    "http://localhost:5173",  # Vite development server
+    "http://localhost:3000",
+    "http://localhost:5173",
     "http://127.0.0.1:3000",
     "http://127.0.0.1:5173",
 ]
-
-# Add production origins from environment
 cors_env = os.getenv('CORS_ORIGINS')
 if cors_env:
     try:
@@ -104,10 +81,7 @@ app.add_middleware(
 )
 
 
-# Trusted Host Middleware (security)
 allowed_hosts = ["localhost", "127.0.0.1", "*.localhost"]
-
-# Add production hosts
 if os.getenv('ENVIRONMENT') == 'production':
     allowed_hosts.extend([
         "*.onrender.com",
@@ -120,10 +94,8 @@ app.add_middleware(
 )
 
 
-# Global exception handler
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):
-    """Global exception handler for unhandled errors."""
     logger.error(f"Unhandled exception: {exc}", exc_info=True)
     
     return JSONResponse(
@@ -138,10 +110,8 @@ async def global_exception_handler(request, exc):
     )
 
 
-# HTTP exception handler
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request, exc):
-    """Handler for HTTP exceptions."""
     return JSONResponse(
         status_code=exc.status_code,
         content=exc.detail if isinstance(exc.detail, dict) else {
