@@ -4,6 +4,7 @@ import PageHeader from '../components/layout/PageHeader';
 import { Card } from '../components/ui';
 import { FileUpload, UploadProgress } from '../components/upload';
 import { useApp } from '../context/AppContext';
+import JobDescriptionInput from '../components/JobDescriptionInput';
 
 const UploadPage = () => {
   const navigate = useNavigate();
@@ -14,6 +15,9 @@ const UploadPage = () => {
     error: null,
     uploadedFile: null
   });
+  const [jobDescription, setJobDescription] = useState('');
+  const [jobError, setJobError] = useState(null);
+  const [showJobInput, setShowJobInput] = useState(false);
 
   const handleFileSelect = async (file, error) => {
     if (error) {
@@ -57,10 +61,7 @@ const UploadPage = () => {
         progress: 100
       }));
 
-      // Navigate to results after a short delay
-      setTimeout(() => {
-        navigate('/results');
-      }, 1500);
+      setShowJobInput(true); // Show job description input
 
     } catch (uploadError) {
       setUploadState(prev => ({ 
@@ -70,6 +71,16 @@ const UploadPage = () => {
       }));
       dispatch({ type: 'SET_ERROR', payload: 'Upload failed. Please try again.' });
     }
+  };
+
+  const handleJobSubmit = () => {
+    if (jobDescription.length < 50 || jobDescription.length > 5000) {
+      setJobError('Job description must be between 50 and 5000 characters.');
+      return;
+    }
+    setJobError(null);
+    // You can dispatch or store jobDescription here if needed
+    navigate('/results');
   };
 
   const handleStartOver = () => {
@@ -91,7 +102,14 @@ const UploadPage = () => {
       
       <div className="max-w-2xl mx-auto space-y-6">
         <Card>
-          {uploadState.uploadedFile && uploadState.progress > 0 ? (
+          {showJobInput ? (
+            <JobDescriptionInput
+              value={jobDescription}
+              onChange={setJobDescription}
+              onSubmit={handleJobSubmit}
+              error={jobError}
+            />
+          ) : uploadState.uploadedFile && uploadState.progress > 0 ? (
             <div className="space-y-6">
               <UploadProgress
                 progress={uploadState.progress}
@@ -110,7 +128,7 @@ const UploadPage = () => {
                     Upload Successful!
                   </h3>
                   <p className="text-gray-600 mb-4">
-                    Redirecting to analysis results...
+                    Please provide the job description for analysis.
                   </p>
                 </div>
               )}
