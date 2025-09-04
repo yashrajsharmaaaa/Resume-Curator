@@ -13,7 +13,8 @@
 *.sqlite
 *.sqlite3
 test.db
-resume_curator.db
+resume_curator.db*
+.kiro/
 
 # Logs
 logs/
@@ -206,3 +207,18 @@ docker-compose.yml
 railway.json
 vercel.json
 init.sql
+
+# Local DB files
+resume_curator.db*
+
+# Local environment files
+.kiro/
+.venv/
+
+# Local scripts
+deploy-local.bat
+deploy-local.sh
+frontend/deploy-github-pages.bat
+
+# Backend tests
+backend/tests/

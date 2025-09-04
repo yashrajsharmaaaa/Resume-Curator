@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "description": "AI-powered resume analysis frontend",
-  "homepage": "https://resumecurator.com",
+  "homepage": "https://yourusername.github.io/resume-curator",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -14,7 +14,9 @@
     "preview": "vite preview",
     "analyze": "vite build --mode analyze",
     "clean": "rm -rf dist",
-    "deploy": "npm run clean && npm run build:prod"
+    "predeploy": "npm run build:prod",
+    "deploy": "gh-pages -d dist",
+    "deploy:local": "npm run clean && npm run build:prod"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.7",

@@ -1,0 +1,53 @@
+# Render deployment configuration for Resume Curator
+# This file defines how to deploy the application on Render cloud platform
+
+services:
+  # Backend API Service
+  - type: web
+    name: resume-curator-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    plan: free
+    region: oregon
+    branch: main
+    rootDir: backend
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: false
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        fromService:
+          type: web
+          name: resume-curator-backend
+          property: port
+      - key: ATLASCLOUD_API_KEY
+        sync: false  # Set this manually in Render dashboard
+      - key: ATLASCLOUD_BASE_URL
+        value: https://api.atlascloud.ai/v1
+      - key: ATLASCLOUD_MODEL
+        value: openai/gpt-oss-20b
+      - key: DATABASE_URL
+        fromDatabase:
+          name: resume-curator-db
+          property: connectionString
+      - key: ALLOWED_ORIGINS
+        value: https://yourusername.github.io
+    healthCheckPath: /health
+
+  # PostgreSQL Database
+  - type: pserv
+    name: resume-curator-db
+    plan: free
+    region: oregon
+    databaseName: resume_curator
+    user: resume_curator_user
+
+# Static Site (Frontend) - Deploy separately to GitHub Pages
+# Instructions:
+# 1. Build: npm run build
+# 2. Deploy: npm run deploy (with gh-pages)
+# 3. Update ALLOWED_ORIGINS above with your GitHub Pages URL
